@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 
 function App() {
-    const urlGoods = `https://www.wildberries.by/catalog/180954182/detail.aspx?targetUrl=SN`
+    const urlGoods = `https://www.wildberries.by/catalog/180954182/detail.aspx?targetUrl=SN`;
+    const localhost = `http://bouncy-tested-museum.glitch.me/`;
     const wildGoods = urlGoods.slice(35).split('/')[0];
     const urlWildberriesGoods =
         `https://card.wb.ru/cards/v2/detail?curr=byn&dest=-59202&nm=${wildGoods}`
     const [returnData, setReturnData] = useState();
     const [url, setUrl] = useState('');
-
-    useEffect(() => {
-        if (returnData !== undefined) {
-            console.log(returnData[0]);
-        }
-    }, [returnData])
 
     return (
         <>
@@ -35,11 +30,13 @@ function App() {
 
     async function getData() {
         console.log('start')
-        return fetch(urlWildberriesGoods)
+        return fetch(localhost)
             .then(response => response.json())
-            .then(response => setReturnData(response.data.products))
+            // .then(response => setReturnData(response.glossary))
+            .then(response => console.log(response.glossary))
             .finally(() => console.log('finish'));
     }
+
 }
 
 export default App
