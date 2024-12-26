@@ -1,7 +1,7 @@
 import { IProduct } from '../model/Product.ts';
 import { IService } from './IService.ts';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_SERVER_URL;
 
 export class Service implements IService {
     /**
