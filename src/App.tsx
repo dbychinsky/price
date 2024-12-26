@@ -5,15 +5,15 @@ import { Service } from './service/Service.ts';
 export const server = new Service();
 
 function App() {
-    const urlGoods = `https://www.wildberries.by/catalog/250909718/detail.aspx`;
+    // const urlGoods = `https://www.wildberries.by/catalog/250909718/detail.aspx`;
 
     // const localhost = `http://bouncy-tested-museum.glitch.me/`;
-    const localhost = `http://localhost:3000`;
+    // const localhost = `http://localhost:3000`;
 
-    const wildGoods = urlGoods.slice(35).split('/')[0];
+    // const wildGoods = urlGoods.slice(35).split('/')[0];
 
-    const urlWildberriesGoods =
-        `https://card.wb.ru/cards/v2/detail?curr=byn&dest=-59202&nm=${wildGoods}`
+    // const urlWildberriesGoods =
+    //     `https://card.wb.ru/cards/v2/detail?curr=byn&dest=-59202&nm=${wildGoods}`
     const [returnData, setReturnData] = useState<IProduct | undefined>(undefined);
     const [url, setUrl] = useState('');
 
@@ -34,7 +34,7 @@ function App() {
     }
 
     function pushUrl() {
-        setUrl(urlGoods);
+        // setUrl(urlGoods);
     }
 
     async function getData() {
