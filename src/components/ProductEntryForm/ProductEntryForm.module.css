@@ -1,0 +1,27 @@
+@import '../../assets/palette.css';
+
+.productEntryForm {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+}
+
+input {
+    box-sizing: border-box;
+    border: 1px solid var(--grey-color);
+    height: 36px;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+button {
+    box-sizing: border-box;
+    border: none;
+    color: var(--white-color);
+    background-color: var(--pink-color);
+    height: 36px;
+    padding: 8px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+}

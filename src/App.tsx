@@ -1,44 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IProduct } from './model/Product.ts';
 import { Service } from './service/Service.ts';
+import { Product } from './components/Product/Product.tsx';
+import { ProductEntryForm } from './components/ProductEntryForm/ProductEntryForm.tsx';
+import styles from './App.module.css';
+import { DeviceTypes, getDeviceType } from './utils/GetDeviceType.ts';
+import { InfoPanel, InfoPanelList } from './components/InfoPanel/InfoPanel.tsx';
 
 export const server = new Service();
 
 function App() {
-    const [returnData, setReturnData] = useState<IProduct | undefined>(undefined);
-    const [url, setUrl] = useState('');
+    const [product, setProduct] = useState<IProduct | undefined>(undefined);
+    const [productUrl, setProductUrl] = useState<string>('');
+    const [deviceType, setDeviceType] = useState<DeviceTypes>(DeviceTypes.mobile);
+
+    useEffect(() => {
+        setDeviceType(getDeviceType());
+    }, []);
+
+    const mobileLayout = <>
+        <ProductEntryForm
+            setReturnData={setProduct}
+            url={productUrl}
+            setUrl={setProductUrl}/>
+        <Product returnData={product}/>
+    </>
+
+    const desktopLayout = <div>Приложение только для мобильной версии браузера.</div>
 
     return (
-        <>
-            <input
-                value={url}
-                onChange={(value) => setUrlValue(value.target.value)}/>
-
-            <button onClick={pushUrl}>get url</button>
-            <button onClick={getData}>get data</button>
-            {returnData && returnData.id}
-        </>
-    )
-
-    function setUrlValue(value: string) {
-        setUrl(value);
-    }
-
-    function pushUrl() {
-        // setUrl(urlGoods);
-    }
-
-    async function getData() {
-        // console.log('start')
-        // return fetch(`${localhost}?id=${wildGoods}`)
-        //     .then(response => response.json())
-        // .then(response => setReturnData(response))
-        // .finally(() => console.log('finish'));
-
-        server.getProduct('250909718').then(response => setReturnData(response));
-
-    }
-
+        <div className={styles.app}>
+            <InfoPanel
+                text={'Добавленные в отслеживаемый список товары хранятся на устройстве!'}
+                type={InfoPanelList.information}/>
+            {deviceType === DeviceTypes.mobile
+                ? <>{mobileLayout}</>
+                : <>{mobileLayout}</>}
+        </div>)
 }
 
 export default App

@@ -1,0 +1,10 @@
+.infoPanel {
+    padding: 10px 12px;
+    max-width: 300px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.infoPanel.information {
+    background: var(--pink-light-color);
+}
