@@ -1,0 +1,16 @@
+.infoPanel {
+    padding: 10px 12px;
+    max-width: 300px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.infoPanel.informationStatic {
+    background: var(--color-purple-light);
+    max-width: 300px;
+    font-size: 14px;
+}
+
+.infoPanel.information {
+    background: var(--color-purple-light);
+}

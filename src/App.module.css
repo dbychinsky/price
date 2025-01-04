@@ -1,11 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import 'assets/palette.css';
 
 .app {
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
     gap: 20px;
+}
 
+.app * {
     font-family: "Rubik", serif;
     font-optical-sizing: auto;
     font-style: normal;

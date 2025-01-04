@@ -1,7 +1,9 @@
 :root {
-    --black-color: #242424;
-    --white-color: #ffffff;
-    --grey-color: #d3d4dd;
-    --pink-color: #a73afd;
-    --pink-light-color: #e4c3ff;
+    --color-black: #242424;
+    --color-white: #ffffff;
+    --color-grey: #d3d4dd;
+    --color-grey-light: #f6f6f9;
+    --color-grey-dark: #868695;
+    --color-purple: #a73afd;
+    --color-purple-light: #e4c3ff;
 }

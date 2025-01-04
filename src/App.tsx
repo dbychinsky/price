@@ -1,41 +1,32 @@
-import { useEffect, useState } from "react";
-import { IProduct } from './model/Product.ts';
+import { useState } from "react";
 import { Service } from './service/Service.ts';
-import { Product } from './components/Product/Product.tsx';
-import { ProductEntryForm } from './components/ProductEntryForm/ProductEntryForm.tsx';
+import { ProductEntryForm } from './components/productEntryForm/ProductEntryForm.tsx';
 import styles from './App.module.css';
-import { DeviceTypes, getDeviceType } from './utils/GetDeviceType.ts';
-import { InfoPanel, InfoPanelList } from './components/InfoPanel/InfoPanel.tsx';
+import { ProductList } from "./components/productList/ProductList.tsx";
+import { Toast } from "./components/toast/Toast.tsx";
+import { Header } from "./components/header/Header.tsx";
+import { IProductStorage } from "./model/ProductStorage.ts";
 
 export const server = new Service();
 
 function App() {
-    const [product, setProduct] = useState<IProduct | undefined>(undefined);
+    const [productList, setProductList] = useState<IProductStorage[]>([]);
     const [productUrl, setProductUrl] = useState<string>('');
-    const [deviceType, setDeviceType] = useState<DeviceTypes>(DeviceTypes.mobile);
-
-    useEffect(() => {
-        setDeviceType(getDeviceType());
-    }, []);
-
-    const mobileLayout = <>
-        <ProductEntryForm
-            setReturnData={setProduct}
-            url={productUrl}
-            setUrl={setProductUrl}/>
-        <Product returnData={product}/>
-    </>
-
-    const desktopLayout = <div>Приложение только для мобильной версии браузера.</div>
 
     return (
         <div className={styles.app}>
-            <InfoPanel
-                text={'Добавленные в отслеживаемый список товары хранятся на устройстве!'}
-                type={InfoPanelList.information}/>
-            {deviceType === DeviceTypes.mobile
-                ? <>{mobileLayout}</>
-                : <>{mobileLayout}</>}
+            <button onClick={() => setProductUrl('https://www.wildberries.by/catalog/224283509/detail.aspx')}>1</button>
+            <button onClick={() => setProductUrl('https://www.wildberries.by/catalog/113178628/detail.aspx')}>2</button>
+            <Header/>
+            <ProductEntryForm
+                productList={productList}
+                setProductList={setProductList}
+                url={productUrl}
+                setUrl={setProductUrl}/>
+            <ProductList
+                productList={productList}
+            />
+            <Toast/>
         </div>)
 }
 

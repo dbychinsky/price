@@ -2,6 +2,7 @@ import styles from './InfoPanel.module.css';
 import { clsx } from 'clsx';
 
 export enum InfoPanelList {
+    informationStatic = 'informationStatic',
     information = 'information',
     success = 'success',
     error = 'error',
