@@ -1,5 +1,5 @@
 export interface IProductStorage {
     id: number,
-    name: '',
+    name: string,
     price: number,
 }

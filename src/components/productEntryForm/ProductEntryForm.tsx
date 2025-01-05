@@ -33,28 +33,28 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
     );
 
     function addProductToList() {
-        getData()
-            .then(() => server.saveProduct(productList));
-    }
-
-    async function getData() {
         server.getProduct(getIdFromUrl(url))
             .then(response =>
                 productExist(response.id, productList)
                     ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
-                    : convertResponseToView(response)
+                    : saveData(response)
             )
             .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
             .finally(() => setUrl(''));
     }
 
-    function convertResponseToView(productResponse: IProductResponse) {
-        if (productResponse !== undefined) {
-            setProductList([... productList, {
-                id: productResponse.id,
-                name: productResponse.name,
-                price: productResponse.sizes[0].price.total
-            }]);
+    function saveData(response: IProductResponse) {
+        const productConverted = convertResponseToView(response);
+
+        setProductList([... productList, productConverted]);
+        server.saveProduct(productConverted).then()
+    }
+
+    function convertResponseToView(productResponse: IProductResponse): IProductStorage {
+        return {
+            id: productResponse.id,
+            name: productResponse.name,
+            price: productResponse.sizes[0].price.total
         }
     }
 
