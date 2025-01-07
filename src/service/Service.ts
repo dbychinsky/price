@@ -1,16 +1,17 @@
 import { IProductResponse } from '../model/ProductResponse.ts';
-import { IService } from './IService.ts';
 import { IProductStorage } from "../model/ProductStorage.ts";
+import { IProductCurrency } from "../model/Currency.ts";
 
 const apiUrl = import.meta.env.VITE_SERVER_URL;
 
-export class Service implements IService {
+export class Service {
     private PRODUCT_LIST_KEY = 'PRODUCT_LIST_KEY';
+    private CURRENCY_KEY = 'CURRENCY_KEY';
 
     /**
      * @description  Получение списка продуктов c wb.
      */
-    async getProduct(productId: string): Promise<IProductResponse> {
+    async getProduct(productId: number): Promise<IProductResponse> {
         return await fetch(`${apiUrl}?id=${productId}`)
             .then(function (response) {
                 return response.json();
@@ -37,15 +38,30 @@ export class Service implements IService {
     /**
      * @description  Удаление из списка продуктов из lh.
      */
-    async deleteProduct(id: number) {
+    async deleteProduct(idProduct: number) {
         let productList: IProductStorage[] = await this.loadStorage(this.PRODUCT_LIST_KEY);
-        this.saveStorage(this.PRODUCT_LIST_KEY, productList.filter((product) => product.id !== id));
+
+        this.saveStorage(this.PRODUCT_LIST_KEY, productList.filter((product) => product.id !== idProduct));
+    }
+
+    /**
+     * @description Сохранение выбранного типа валюты.
+     */
+    async saveCurrency(currency: IProductCurrency) {
+        this.saveStorage(this.CURRENCY_KEY, currency);
+    }
+
+    /**
+     * @description Сохранение выбранного типа валюты.
+     */
+    async loadCurrency(): Promise<IProductCurrency> {
+        return await this.loadStorage(this.CURRENCY_KEY);
     }
 
     /**
      * Метод для работы с localStorage - сохранение данных
      */
-    private saveStorage(key: string, object: IProductStorage[]) {
+    private saveStorage(key: string, object: IProductStorage[] | IProductCurrency) {
         localStorage.setItem(key, JSON.stringify(object));
     }
 

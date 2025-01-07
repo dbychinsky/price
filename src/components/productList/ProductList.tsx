@@ -1,14 +1,18 @@
 import styles from './ProductList.module.css';
 import { Product } from "../product/Product.tsx";
-import { IProductStorage } from "../../model/ProductStorage.ts";
+import { IProductView } from "../../model/ProductView.ts";
 
 interface ProductListProps {
-    productList: IProductStorage[];
+    productList: IProductView[];
     deleteProduct: (id: number) => void;
+    setProductList: (value: IProductView[]) => void;
 }
 
 export const ProductList = (props: ProductListProps) => {
-    const {productList, deleteProduct} = props;
+    const {
+        productList,
+        deleteProduct,
+    } = props;
 
     return (
         <div className={styles.productList}>
@@ -21,4 +25,5 @@ export const ProductList = (props: ProductListProps) => {
             ))}
         </div>
     );
+
 };

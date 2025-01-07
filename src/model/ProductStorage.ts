@@ -1,4 +1,6 @@
+import { IProductPrice } from "./ProductView.ts";
+
 export interface IProductStorage {
     id: number,
-    name: string,
+    price: IProductPrice[],
 }
