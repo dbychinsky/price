@@ -9,66 +9,81 @@ export class Service {
     private CURRENCY_KEY = 'CURRENCY_KEY';
 
     /**
-     * @description  Получение списка продуктов c wb.
+     * @description  Получение списка продуктов c WB.
      */
-    async getProduct(productId: number): Promise<IProductResponse> {
-        return await fetch(`${apiUrl}?id=${productId}`)
-            .then(function (response) {
-                return response.json();
-            })
+    async getProductFromWB(productId: number, currency: IProductCurrency): Promise<IProductResponse> {
+        try {
+            const response =
+                await fetch(`${apiUrl}?id=${productId}&currency=${currency.id}`);
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Ошибка при выполнении запроса:', error);
+            throw error; // Пробрасываем ошибку дальше
+        }
     }
 
     /**
-     * @description  Получение списка продуктов из lh.
+     * @description  Получение списка продуктов из LS.
      */
-    async loadProduct() {
-        return await this.loadStorage(this.PRODUCT_LIST_KEY);
+    async loadProductFromLocalStorage(): Promise<IProductStorage[]> {
+        return await this.load(this.PRODUCT_LIST_KEY);
     }
 
     /**
-     * @description  Сохранение списка продуктов.
+     * @description  Сохранение продукта в список в LS.
      */
-    async saveProduct(product: IProductStorage) {
-        let productList: IProductStorage[] = this.loadStorage(this.PRODUCT_LIST_KEY);
+    async saveProductToLocalStorage(product: IProductStorage) {
+        let productList: IProductStorage[] = this.load(this.PRODUCT_LIST_KEY);
 
         productList.push(product);
-        this.saveStorage(this.PRODUCT_LIST_KEY, productList);
+        this.save(this.PRODUCT_LIST_KEY, productList);
     }
 
     /**
-     * @description  Удаление из списка продуктов из lh.
+     * @description  Сохранение списка продуктов в LS.
      */
-    async deleteProduct(idProduct: number) {
-        let productList: IProductStorage[] = await this.loadStorage(this.PRODUCT_LIST_KEY);
+    async saveProductListToLocalStorage(productList: IProductStorage[]) {
+        this.save(this.PRODUCT_LIST_KEY, productList);
+    }
 
-        this.saveStorage(this.PRODUCT_LIST_KEY, productList.filter((product) => product.id !== idProduct));
+    /**
+     * @description  Удаление из списка продуктов из LS.
+     */
+    async deleteProductFromLocalStorage(idProduct: number) {
+        let productList: IProductStorage[] = await this.load(this.PRODUCT_LIST_KEY);
+
+        this.save(this.PRODUCT_LIST_KEY, productList.filter((product) => product.id !== idProduct));
     }
 
     /**
      * @description Сохранение выбранного типа валюты.
      */
-    async saveCurrency(currency: IProductCurrency) {
-        this.saveStorage(this.CURRENCY_KEY, currency);
+    async saveCurrencyToLocalStorage(currency: IProductCurrency) {
+        this.save(this.CURRENCY_KEY, currency);
     }
 
     /**
      * @description Сохранение выбранного типа валюты.
      */
-    async loadCurrency(): Promise<IProductCurrency> {
-        return await this.loadStorage(this.CURRENCY_KEY);
+    async loadCurrencyFromLocalStorage(): Promise<IProductCurrency> {
+        return await this.load(this.CURRENCY_KEY);
     }
 
     /**
      * Метод для работы с localStorage - сохранение данных
      */
-    private saveStorage(key: string, object: IProductStorage[] | IProductCurrency) {
+    private save(key: string, object: IProductStorage[] | IProductCurrency) {
         localStorage.setItem(key, JSON.stringify(object));
     }
 
     /**
      * Метод для работы с localStorage - загрузка данных
      */
-    private loadStorage(key: string) {
+    private load(key: string) {
         const result = JSON.parse(localStorage.getItem(key)!);
 
         if (result === null) {

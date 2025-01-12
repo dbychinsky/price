@@ -3,14 +3,20 @@ export interface IProductCurrency {
     name: string,
 }
 
-export enum SelectCurrencyList {
-    RUB = 'RUB',
-    BYN = 'BYN',
-    KZT = 'KZT'
+export enum SelectCurrencyListId {
+    rub = 'rub',
+    byn = 'byn',
+    kzt = 'kzt'
+}
+
+export enum SelectCurrencyListName {
+    rub = 'RUB',
+    byn = 'BYN',
+    kzt = 'KZT'
 }
 
 export const currencyList: IProductCurrency[] = [
-    {id: SelectCurrencyList.BYN, name: SelectCurrencyList.BYN},
-    {id: SelectCurrencyList.RUB, name: SelectCurrencyList.RUB},
-    {id: SelectCurrencyList.KZT, name: SelectCurrencyList.KZT},
+    {id: SelectCurrencyListId.byn, name: SelectCurrencyListName.byn},
+    {id: SelectCurrencyListId.rub, name: SelectCurrencyListName.rub},
+    {id: SelectCurrencyListId.kzt, name: SelectCurrencyListName.kzt},
 ];

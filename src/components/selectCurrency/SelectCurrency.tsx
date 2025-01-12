@@ -4,7 +4,7 @@ import { currencyList, IProductCurrency } from "../../model/Currency.ts";
 import { service } from "../../App.tsx";
 
 interface SelectCurrencyProps {
-    currentLanguage: IProductCurrency | undefined;
+    currentLanguage: IProductCurrency;
     setCurrentLanguage: (value: IProductCurrency) => void;
 }
 
@@ -34,10 +34,10 @@ export function SelectCurrency(props: SelectCurrencyProps) {
 
     function changeHandler(event: ChangeEvent<HTMLSelectElement>) {
         const target: IProductCurrency | undefined = currencyList.find((currency) =>
-            currency.id === event.target.value)
+            currency.name === event.target.value)
         if (target) {
             setCurrentLanguage(target);
-            service.saveCurrency(target).then();
+            service.saveCurrencyToLocalStorage(target).then();
         }
     }
 

@@ -6,7 +6,7 @@ interface ProductEntryFormProps {
     url: string;
     setUrl: (url: string) => void;
     addProductToList: () => void;
-    currentLanguage: IProductCurrency | undefined;
+    currentCurrency: IProductCurrency;
     setCurrentLanguage: (value: IProductCurrency) => void;
 }
 
@@ -15,7 +15,7 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
         url,
         setUrl,
         addProductToList,
-        currentLanguage,
+        currentCurrency,
         setCurrentLanguage,
     } = props;
 
@@ -25,7 +25,7 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
                 <label>Укажите ссылку на товар</label>
                 <SelectCurrency
                     setCurrentLanguage={setCurrentLanguage}
-                    currentLanguage={currentLanguage}/>
+                    currentLanguage={currentCurrency}/>
             </div>
             <input
                 value={url}

@@ -6,16 +6,15 @@ import { getProductPriceFraction } from "./GetProductPriceFraction.ts";
 /**
  * Конвертация данных ответа
  */
-export class ConvertResponse {
+export class Serialize {
 
-    static convertResponseToStorage(productResponse: IProductResponse): IProductStorage {
+    static responseToStorage(productResponse: IProductResponse): IProductStorage {
         const price: IProductPrice[] = [];
 
         productResponse.sizes.map((item) => {
             price.push({
                 priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
                 priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null
-
             });
         })
 
@@ -25,7 +24,7 @@ export class ConvertResponse {
         }
     }
 
-    static convertResponseToView(productResponse: IProductResponse): IProductView {
+    static responseToView(productResponse: IProductResponse): IProductView {
         const size: IProductSize[] = [];
 
         productResponse.sizes.map((item) => {

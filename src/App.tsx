@@ -8,48 +8,58 @@ import { Header } from "./components/header/Header.tsx";
 import { toast } from "react-toastify";
 import { MessageList } from "./components/infoPanel/MessageList.ts";
 import { IProductResponse } from "./model/ProductResponse.ts";
-import { ConvertResponse } from "./utils/ConvertResponse.ts";
+import { Serialize } from "./utils/Serialize.ts";
 import { getIdFromUrl } from "./utils/GetIdFromUrl.ts";
 import { IProductView } from "./model/ProductView.ts";
 import { IProductStorage } from "./model/ProductStorage.ts";
 import { productExist } from "./utils/ProductExist.ts";
 import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
-import { IProductCurrency } from "./model/Currency.ts";
+import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "./model/Currency.ts";
 
 export const service = new Service();
 
 function App() {
+    const initialCurrentCurrency: IProductCurrency = {
+        id: SelectCurrencyListId.byn,
+        name: SelectCurrencyListName.byn,
+    }
+
     const [productList, setProductList] = useState<IProductView[]>([]);
-    const [currentLanguage, setCurrentLanguage] = useState<IProductCurrency | undefined>(undefined);
+    const [currentCurrency, setCurrentCurrency] = useState<IProductCurrency>(initialCurrentCurrency);
     const [productUrl, setProductUrl] = useState<string>('');
 
-    // Получаем список из LS и передаем его в запросы
     useEffect(() => {
-        service.loadProduct()
-            .then((response: IProductStorage[]) =>
-                getPrices(response)
-                    .then((response) =>
-                        setProductList(response)
-                    )
-            );
+        service.loadCurrencyFromLocalStorage()
+            .then((response) =>
+                response.id
+                    ? setCurrentCurrency(response)
+                    : service.saveCurrencyToLocalStorage(initialCurrentCurrency)
+            )
+            .catch((error) => console.log(error, 'Не удалось загрузить данные loadCurrency'));
     }, []);
 
     useEffect(() => {
-        service.loadCurrency()
-            .then((response) => setCurrentLanguage(response))
-    }, []);
+        service.loadProductFromLocalStorage()
+            .then((response: IProductStorage[]) =>
+                (convertPrice(response),
+                        convertProductsToViewFromStorage(response)
+                            .then((response: IProductView[]) =>
+                                setProductList(response))
+                            .catch((error) => console.log(error, 'Не удалось загрузить данные convertProductsToViewFromStorage'))
+                ))
+            .catch((error) => console.log(error, 'Не удалось загрузить данные loadProduct'));
+    }, [currentCurrency]);
 
     return (
         <div className={styles.app}>
             <FakeButtons setProductUrl={setProductUrl}/>
-            <div>{currentLanguage && currentLanguage.name}</div>
             <Header/>
             <ProductEntryForm
                 url={productUrl}
                 setUrl={setProductUrl}
                 addProductToList={addProductToList}
-                currentLanguage={currentLanguage}
-                setCurrentLanguage={setCurrentLanguage}
+                currentCurrency={currentCurrency}
+                setCurrentLanguage={setCurrentCurrency}
             />
             <ProductList
                 productList={productList}
@@ -61,37 +71,49 @@ function App() {
     )
 
     function addProductToList() {
-        service.getProduct(Number(getIdFromUrl(productUrl)))
+        service.getProductFromWB(Number(getIdFromUrl(productUrl)), currentCurrency)
             .then(response =>
                 productExist(response.id, productList)
                     ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
-                    : saveData(response)
+                    : saveProductList(response)
             )
             .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
             .finally(() => setProductUrl(''));
     }
 
-    function saveData(response: IProductResponse) {
-        const productConvertedView = ConvertResponse.convertResponseToView(response);
+    function saveProductList(response: IProductResponse) {
+        const productConvertedView =
+            Serialize.responseToView(response);
         setProductList([... productList, productConvertedView]);
-        service.saveProduct(ConvertResponse.convertResponseToStorage(response)).then()
+        service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
     }
 
     function deleteProduct(id: number) {
         const filteredProducts = productList.filter((product) => product.id !== id);
         setProductList(filteredProducts);
-        service.deleteProduct(id).then();
+        service.deleteProductFromLocalStorage(id).then();
     }
 
-    async function getPrices(idList: IProductStorage[]) {
-        let result: IProductView[] = [];
+    async function convertProductsToViewFromStorage(idList: IProductStorage[]): Promise<IProductView[]> {
+        let productStorageList: IProductView[] = [];
 
         for (const item of idList) {
-            const temp = await service.getProduct(item.id);
-            result.push(ConvertResponse.convertResponseToView(temp))
-
+            const product = await service.getProductFromWB(item.id, currentCurrency);
+            productStorageList.push(Serialize.responseToView(product))
         }
-        return result
+
+        return productStorageList
+    }
+
+    async function convertPrice(productList: IProductStorage[]) {
+        let productStoragesList: IProductStorage[] = [];
+
+        for (const item of productList) {
+            const product = await service.getProductFromWB(item.id, currentCurrency);
+            productStoragesList.push(Serialize.responseToStorage(product));
+        }
+
+        service.saveProductListToLocalStorage(productStoragesList).then();
     }
 
 }
