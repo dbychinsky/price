@@ -18,6 +18,22 @@ import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "
 
 export const service = new Service();
 
+/**
+ * @function addProductToList - Добавление в список продуктов. Получаем данные
+ * с сервера WB и помещаем в список отображения и сохраняем в LS.
+ *
+ * @function deleteProduct - Удаляет продукт из списка.
+ *
+ * @function convertProductsToViewFromStorage - Получает на вход список id и текущую
+ * валюту, формирует на основании запрошенных данных с WB в ответе список для
+ * сохранения в LS.
+ *
+ * @function saveProduct - Сохраняет продукт в LS. Используется после добавления
+ * подукта из списка.
+ *
+ * @function saveProductList - Сохраняет список продуктов в LS. Испольузется
+ * после изменения валюты.
+ */
 function App() {
     const initialCurrentCurrency: IProductCurrency = {
         id: SelectCurrencyListId.byn,
@@ -39,14 +55,19 @@ function App() {
     }, []);
 
     useEffect(() => {
+        let productStorageList: IProductStorage[];
+
         service.loadProductFromLocalStorage()
-            .then((response: IProductStorage[]) =>
-                (convertPrice(response),
-                        convertProductsToViewFromStorage(response)
-                            .then((response: IProductView[]) =>
-                                setProductList(response))
-                            .catch((error) => console.log(error, 'Не удалось загрузить данные convertProductsToViewFromStorage'))
-                ))
+            .then((responseProductList: IProductStorage[]) => {
+                    productStorageList = responseProductList;
+
+                    convertProductsToViewFromStorage(productStorageList)
+                        .then((responseProductViewList: IProductView[]) =>
+                            setProductList(responseProductViewList))
+                        .catch((error) => console.log(error, 'Не удалось загрузить данные convertProductsToViewFromStorage'))
+                }
+            )
+            .then(() => saveProductList(productStorageList))
             .catch((error) => console.log(error, 'Не удалось загрузить данные loadProduct'));
     }, [currentCurrency]);
 
@@ -75,17 +96,10 @@ function App() {
             .then(response =>
                 productExist(response.id, productList)
                     ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
-                    : saveProductList(response)
+                    : saveProduct(response)
             )
             .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
             .finally(() => setProductUrl(''));
-    }
-
-    function saveProductList(response: IProductResponse) {
-        const productConvertedView =
-            Serialize.responseToView(response);
-        setProductList([... productList, productConvertedView]);
-        service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
     }
 
     function deleteProduct(id: number) {
@@ -105,7 +119,15 @@ function App() {
         return productStorageList
     }
 
-    async function convertPrice(productList: IProductStorage[]) {
+
+    function saveProduct(response: IProductResponse) {
+        const productConvertedView =
+            Serialize.responseToView(response);
+        setProductList([... productList, productConvertedView]);
+        service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
+    }
+
+    async function saveProductList(productList: IProductStorage[]) {
         let productStoragesList: IProductStorage[] = [];
 
         for (const item of productList) {
