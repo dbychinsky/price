@@ -4,7 +4,7 @@ import { currencyList, IProductCurrency } from "../../model/Currency.ts";
 import { service } from "../../App.tsx";
 
 interface SelectCurrencyProps {
-    currentLanguage: IProductCurrency;
+    currentLanguage: IProductCurrency | null;
     setCurrentLanguage: (value: IProductCurrency) => void;
 }
 

@@ -41,10 +41,11 @@ function App() {
     }
 
     const [productList, setProductList] = useState<IProductView[]>([]);
-    const [currentCurrency, setCurrentCurrency] = useState<IProductCurrency>(initialCurrentCurrency);
+    const [currentCurrency, setCurrentCurrency] = useState<IProductCurrency | null>(null);
     const [productUrl, setProductUrl] = useState<string>('');
 
     useEffect(() => {
+
         service.loadCurrencyFromLocalStorage()
             .then((response) =>
                 response.id
@@ -56,19 +57,20 @@ function App() {
 
     useEffect(() => {
         let productStorageList: IProductStorage[];
+        if (currentCurrency !== null) {
+            service.loadProductFromLocalStorage()
+                .then((responseProductList: IProductStorage[]) => {
+                        productStorageList = responseProductList;
+                        convertProductsToViewFromStorage(productStorageList)
+                            .then((responseProductViewList: IProductView[]) =>
+                                setProductList(responseProductViewList))
+                            .catch((error) => console.log(error, 'Не удалось загрузить данные convertProductsToViewFromStorage'))
+                    }
+                )
+                .then(() => saveProductList(productStorageList))
+                .catch((error) => console.log(error, 'Не удалось загрузить данные loadProduct'));
 
-        service.loadProductFromLocalStorage()
-            .then((responseProductList: IProductStorage[]) => {
-                    productStorageList = responseProductList;
-
-                    convertProductsToViewFromStorage(productStorageList)
-                        .then((responseProductViewList: IProductView[]) =>
-                            setProductList(responseProductViewList))
-                        .catch((error) => console.log(error, 'Не удалось загрузить данные convertProductsToViewFromStorage'))
-                }
-            )
-            .then(() => saveProductList(productStorageList))
-            .catch((error) => console.log(error, 'Не удалось загрузить данные loadProduct'));
+        }
     }, [currentCurrency]);
 
     return (
@@ -86,6 +88,7 @@ function App() {
                 productList={productList}
                 setProductList={setProductList}
                 deleteProduct={deleteProduct}
+                goToWb={goToWb}
             />
             <Toast/>
         </div>
@@ -136,6 +139,10 @@ function App() {
         }
 
         service.saveProductListToLocalStorage(productStoragesList).then();
+    }
+
+    function goToWb(id: number) {
+        // console.log(Number(getIdFromUrl(productUrl)), currentCurrency);
     }
 
 }

@@ -6,7 +6,7 @@ interface ProductEntryFormProps {
     url: string;
     setUrl: (url: string) => void;
     addProductToList: () => void;
-    currentCurrency: IProductCurrency;
+    currentCurrency: IProductCurrency | null;
     setCurrentLanguage: (value: IProductCurrency) => void;
 }
 

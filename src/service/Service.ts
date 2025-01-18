@@ -11,10 +11,10 @@ export class Service {
     /**
      * @description  Получение списка продуктов c WB.
      */
-    async getProductFromWB(productId: number, currency: IProductCurrency): Promise<IProductResponse> {
+    async getProductFromWB(productId: number, currency: IProductCurrency | null): Promise<IProductResponse> {
         try {
             const response =
-                await fetch(`${apiUrl}?id=${productId}&currency=${currency.id}`);
+                await fetch(`${apiUrl}?id=${productId}&currency=${currency?.id}`);
             if (!response.ok) {
                 throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
             }

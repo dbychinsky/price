@@ -6,12 +6,14 @@ interface ProductListProps {
     productList: IProductView[];
     deleteProduct: (id: number) => void;
     setProductList: (value: IProductView[]) => void;
+    goToWb: (id: number) => void;
 }
 
 export const ProductList = (props: ProductListProps) => {
     const {
         productList,
         deleteProduct,
+        goToWb,
     } = props;
 
     return (
@@ -20,10 +22,10 @@ export const ProductList = (props: ProductListProps) => {
                 <div key={product.id}>
                     <Product
                         product={product}
-                        deleteProduct={deleteProduct}/>
+                        deleteProduct={deleteProduct}
+                        goToWb={goToWb}/>
                 </div>
             ))}
         </div>
     );
-
 };
