@@ -1,0 +1,55 @@
+.product {
+    border-bottom: 1px solid var(--color-grey-dark);
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 10px 0;
+
+    .productSectionHead {
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+
+        .productName {
+            display: block;
+        }
+
+        .productList {
+            .productItem {
+                display: flex;
+                flex-flow: row nowrap;
+            }
+        }
+    }
+
+    .productSectionButtons {
+        width: 50px;
+        min-width: 50px;
+        justify-content: right;
+        align-items: center;
+        display: flex;
+        flex-flow: column nowrap;
+
+        .delete {
+            background: none;
+            background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20fill%3D%22none%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23A9A8B0%22%20fill-rule%3D%22evenodd%22%0A%20%20%20%20%20%20%20%20%20%20d%3D%22M8.806.833h2.387c.21%200%20.415%200%20.588.014.19.016.415.053.642.168.313.16.568.415.728.728.115.226.152.451.168.642.014.173.014.378.014.588v.36H17.499A.833.833%200%201%201%2017.5%205h-.883l-.553%208.835c-.04.632-.072%201.155-.133%201.58-.063.444-.164.849-.378%201.227a3.334%203.334%200%200%201-1.444%201.356c-.39.19-.8.266-1.247.301-.429.034-.953.034-1.586.034H8.724c-.633%200-1.157%200-1.586-.034-.446-.035-.857-.111-1.247-.301a3.334%203.334%200%200%201-1.444-1.357c-.214-.377-.315-.782-.379-1.226-.06-.425-.093-.948-.133-1.58L3.383%205H2.5a.833.833%200%201%201%200-1.667h4.167V2.973c0-.21%200-.415.014-.588.016-.19.052-.416.168-.642.16-.313.414-.568.728-.728.226-.115.451-.152.641-.168a7.65%207.65%200%200%201%20.59-.014Zm-.473%202.5h3.333V3a6.781%206.781%200%200%200-.01-.49l-.01-.001a6.823%206.823%200%200%200-.48-.01H8.833a6.821%206.821%200%200%200-.49.01l-.002.011a6.821%206.821%200%200%200-.008.48v.333ZM5.053%205l.544%208.697c.042.674.07%201.13.121%201.483.05.342.11.518.18.64.166.295.418.531.721.679.127.062.306.111.651.139.355.028.812.029%201.487.029h2.485c.674%200%201.132-.001%201.487-.03.344-.027.523-.076.65-.138.304-.148.556-.384.722-.678.07-.123.13-.299.18-.641.05-.352.079-.809.121-1.482L14.946%205H5.053Z%22%0A%20%20%20%20%20%20%20%20%20%20clip-rule%3D%22evenodd%22%2F%3E%0A%3C%2Fsvg%3E);
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 46px;
+            height: 46px;
+            background-size: 70%;
+        }
+
+        .outside {
+            display: block;
+            font-size: 0;
+            width: 46px;
+            height: 46px;
+            background-repeat: no-repeat;
+            background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22%23A9A8B0%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cg%20data-name%3D%2292-Arrow%20Right%22%3E%3Cpath%20d%3D%22M16%2032a16%2016%200%201%201%2016-16%2016%2016%200%200%201-16%2016zm0-30a14%2014%200%201%200%2014%2014A14%2014%200%200%200%2016%202z%22%2F%3E%3Cpath%20d%3D%22M13.71%2024.71%2012.3%2023.3l7.29-7.3-7.3-7.29L13.7%207.3l8%208a1%201%200%200%201%200%201.41z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E);
+            background-size: 64%;
+            background-position: center;
+        }
+    }
+}
+
+

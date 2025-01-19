@@ -15,6 +15,7 @@ export class Service {
         try {
             const response =
                 await fetch(`${apiUrl}?id=${productId}&currency=${currency?.id}`);
+
             if (!response.ok) {
                 throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
             }

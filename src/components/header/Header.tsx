@@ -1,16 +1,14 @@
-import { InfoPanel, InfoPanelList } from "../infoPanel/InfoPanel.tsx";
-import styles from './Header.module.css';
+import './Header.scss';
 
 export const Header = () => {
     return (
-        <div className={styles.header}>
-            <div className={styles.logotype}>
-                <div>Check</div>
-                <div className={styles.background}>ON</div>
+        <div className='header'>
+            <div className='heading'>
+                <div>Аналитика цен</div>
+                <div>маркетплейса wildberries</div>
             </div>
-            <InfoPanel
-                text={'Добавленные в отслеживаемый список товары хранятся на устройстве!'}
-                type={InfoPanelList.informationStatic}/>
+            <h1>Самый <span>Простой</span> способ отследить изменение цены на товар</h1>
+
         </div>
     );
 };

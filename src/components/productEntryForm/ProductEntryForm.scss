@@ -1,0 +1,20 @@
+.productEntryForm {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+
+    label {
+        font-size: 14px;
+        color: var(--color-grey-dark);
+    }
+
+    input {
+        box-sizing: border-box;
+        border: 1px solid var(--color-grey);
+        height: 36px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+}

@@ -1,6 +1,7 @@
-import styles from './ProductEntryForm.module.css';
+import './ProductEntryForm.scss';
 import { SelectCurrency } from "../selectCurrency/SelectCurrency.tsx";
 import { IProductCurrency } from "../../model/Currency.ts";
+import { Button } from "../button/Button.tsx";
 
 interface ProductEntryFormProps {
     url: string;
@@ -20,7 +21,7 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
     } = props;
 
     return (
-        <div className={styles.productEntryForm}>
+        <div className='productEntryForm'>
             <div>
                 <label>Укажите ссылку на товар</label>
                 <SelectCurrency
@@ -30,8 +31,10 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
             <input
                 value={url}
                 onChange={(value) => setUrl(value.target.value)}/>
-
-            <button onClick={addProductToList}>Добавить в список</button>
+            <Button
+                text={'Добавить в список'}
+                onClick={addProductToList}
+                variant={'primary'}/>
         </div>
     );
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Service } from './service/Service.ts';
 import { ProductEntryForm } from './components/productEntryForm/ProductEntryForm.tsx';
-import styles from './App.module.css';
+import './App.scss';
 import { ProductList } from "./components/productList/ProductList.tsx";
 import { Toast } from "./components/toast/Toast.tsx";
 import { Header } from "./components/header/Header.tsx";
@@ -13,8 +13,8 @@ import { getIdFromUrl } from "./utils/GetIdFromUrl.ts";
 import { IProductView } from "./model/ProductView.ts";
 import { IProductStorage } from "./model/ProductStorage.ts";
 import { productExist } from "./utils/ProductExist.ts";
-import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
 import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "./model/Currency.ts";
+import { Footer } from "./components/footer/Footer.tsx";
 
 export const service = new Service();
 
@@ -45,12 +45,14 @@ function App() {
     const [productUrl, setProductUrl] = useState<string>('');
 
     useEffect(() => {
-
         service.loadCurrencyFromLocalStorage()
             .then((response) =>
                 response.id
                     ? setCurrentCurrency(response)
-                    : service.saveCurrencyToLocalStorage(initialCurrentCurrency)
+                    : (
+                        service.saveCurrencyToLocalStorage(initialCurrentCurrency),
+                            setCurrentCurrency(initialCurrentCurrency)
+                    )
             )
             .catch((error) => console.log(error, 'Не удалось загрузить данные loadCurrency'));
     }, []);
@@ -74,23 +76,25 @@ function App() {
     }, [currentCurrency]);
 
     return (
-        <div className={styles.app}>
-            <FakeButtons setProductUrl={setProductUrl}/>
-            <Header/>
-            <ProductEntryForm
-                url={productUrl}
-                setUrl={setProductUrl}
-                addProductToList={addProductToList}
-                currentCurrency={currentCurrency}
-                setCurrentLanguage={setCurrentCurrency}
-            />
-            <ProductList
-                productList={productList}
-                setProductList={setProductList}
-                deleteProduct={deleteProduct}
-                goToWb={goToWb}
-            />
-            <Toast/>
+        <div className={"app"}>
+            <div className='wrapper'>
+                {/*<FakeButtons setProductUrl={setProductUrl}/>*/}
+                <Header/>
+                <ProductEntryForm
+                    url={productUrl}
+                    setUrl={setProductUrl}
+                    addProductToList={addProductToList}
+                    currentCurrency={currentCurrency}
+                    setCurrentLanguage={setCurrentCurrency}
+                />
+                <ProductList
+                    productList={productList}
+                    setProductList={setProductList}
+                    deleteProduct={deleteProduct}
+                />
+                <Toast/>
+            </div>
+            <Footer/>
         </div>
     )
 
@@ -140,11 +144,6 @@ function App() {
 
         service.saveProductListToLocalStorage(productStoragesList).then();
     }
-
-    function goToWb(id: number) {
-        // console.log(Number(getIdFromUrl(productUrl)), currentCurrency);
-    }
-
 }
 
 export default App

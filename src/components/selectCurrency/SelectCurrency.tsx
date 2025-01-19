@@ -1,4 +1,4 @@
-import styles from './SelectCurrency.module.css';
+import './SelectCurrency.scss';
 import { ChangeEvent } from "react";
 import { currencyList, IProductCurrency } from "../../model/Currency.ts";
 import { service } from "../../App.tsx";
@@ -20,7 +20,7 @@ export function SelectCurrency(props: SelectCurrencyProps) {
             onChange={changeHandler}
             name='SelectCurrency'
             value={currentLanguage?.name}
-            className={styles.inputSelect}>
+            className='inputSelect'>
             <>
                 {currencyList.map((item) => (
                     <option key={item.id} value={item.name}>

@@ -1,4 +1,4 @@
-import styles from './InfoPanel.module.css';
+import './InfoPanel.scss';
 import { clsx } from 'clsx';
 
 export enum InfoPanelList {
@@ -15,7 +15,7 @@ interface InfoPanelProps {
 
 export const InfoPanel = (props: InfoPanelProps) => {
     const {type, text} = props;
-    const wrapperClass = clsx(styles[type], styles.infoPanel)
+    const wrapperClass = clsx([type], 'infoPanel')
 
     return (
         <div className={wrapperClass}>
