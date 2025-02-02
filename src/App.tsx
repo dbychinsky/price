@@ -4,7 +4,6 @@ import { ProductEntryForm } from './components/productEntryForm/ProductEntryForm
 import './App.scss';
 import { ProductList } from "./components/productList/ProductList.tsx";
 import { Toast } from "./components/toast/Toast.tsx";
-import { Header } from "./components/header/Header.tsx";
 import { toast } from "react-toastify";
 import { MessageList } from "./components/infoPanel/MessageList.ts";
 import { IProductResponse } from "./model/ProductResponse.ts";
@@ -14,7 +13,6 @@ import { IProductStorage } from "./model/ProductStorage.ts";
 import { productExist } from "./utils/ProductExist.ts";
 import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "./model/Currency.ts";
 import { Footer } from "./components/footer/Footer.tsx";
-import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
 import { GetUrlToMarketplace } from "./utils/GetUrlToMarketplace.ts";
 import { IProductLink } from "./model/ProductLink.ts";
 
