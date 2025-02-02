@@ -9,12 +9,14 @@ import { toast } from "react-toastify";
 import { MessageList } from "./components/infoPanel/MessageList.ts";
 import { IProductResponse } from "./model/ProductResponse.ts";
 import { Serialize } from "./utils/Serialize.ts";
-import { getIdFromUrl } from "./utils/GetIdFromUrl.ts";
 import { IProductView } from "./model/ProductView.ts";
 import { IProductStorage } from "./model/ProductStorage.ts";
 import { productExist } from "./utils/ProductExist.ts";
 import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "./model/Currency.ts";
 import { Footer } from "./components/footer/Footer.tsx";
+import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
+import { GetUrlToMarketplace } from "./utils/GetUrlToMarketplace.ts";
+import { IProductLink } from "./model/ProductLink.ts";
 
 export const service = new Service();
 
@@ -43,6 +45,7 @@ function App() {
     const [productList, setProductList] = useState<IProductView[]>([]);
     const [currentCurrency, setCurrentCurrency] = useState<IProductCurrency | null>(null);
     const [productUrl, setProductUrl] = useState<string>('');
+    const [productUrlList, setProductUrlList] = useState<IProductLink[]>([]);
 
     useEffect(() => {
         service.loadCurrencyFromLocalStorage()
@@ -75,11 +78,18 @@ function App() {
         }
     }, [currentCurrency]);
 
+    useEffect(() => {
+        service.loadLinkToLocalStorage()
+            .then((response: IProductLink[]) => {
+                setProductUrlList(response)
+            })
+    }, []);
+
     return (
         <div className={"app"}>
             <div className='wrapper'>
                 {/*<FakeButtons setProductUrl={setProductUrl}/>*/}
-                <Header/>
+                {/*<Header/>*/}
                 <ProductEntryForm
                     url={productUrl}
                     setUrl={setProductUrl}
@@ -89,7 +99,7 @@ function App() {
                 />
                 <ProductList
                     productList={productList}
-                    setProductList={setProductList}
+                    productUrlList={productUrlList}
                     deleteProduct={deleteProduct}
                 />
                 <Toast/>
@@ -99,12 +109,17 @@ function App() {
     )
 
     function addProductToList() {
-        service.getProductFromWB(Number(getIdFromUrl(productUrl)), currentCurrency)
+        const productUrlCut = GetUrlToMarketplace.getCutUrlMarketplace(productUrl);
+        const productId = Number(GetUrlToMarketplace.getUrl(productUrlCut))
+        const productLinkToWb: IProductLink = {id: productId, url: productUrlCut}
+
+        service.getProductFromWB(productId, currentCurrency)
             .then(response =>
                 productExist(response.id, productList)
                     ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
                     : saveProduct(response)
             )
+            .then(() => service.saveLinkToLocalStorage(productLinkToWb).then())
             .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
             .finally(() => setProductUrl(''));
     }

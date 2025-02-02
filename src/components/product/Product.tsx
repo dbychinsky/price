@@ -2,14 +2,20 @@ import './Product.scss';
 import { IProductView } from "../../model/ProductView.ts";
 import { getUrlMarketplace } from "../../utils/GetUrlToMarketplace.ts";
 import { Button } from "../button/Button.tsx";
+import { IProductLink } from "../../model/ProductLink.ts";
 
 interface ProductProps {
     product: IProductView;
+    productUrlList: IProductLink[];
     deleteProduct: (id: number) => void;
 }
 
 export const Product = (props: ProductProps) => {
-    const {product, deleteProduct} = props;
+    const {
+        product,
+        productUrlList,
+        deleteProduct
+    } = props;
 
     return (
         <div className='product'>
@@ -43,11 +49,19 @@ export const Product = (props: ProductProps) => {
                     onClick={() => deleteProduct(product.id)}
                     className='delete'
                     variant='icon'/>
-                <a className='outside' href={getUrlMarketplace(product.id)}
+                <a className='outside'
+                   onClick={(event) => handleClick(event, product.id)}
                    title={"wb"}
                    target="_blank"
                    rel="noopener noreferrer">go to marketplace</a>
             </div>
         </div>
     );
+
+    function handleClick(event: React.MouseEvent<HTMLAnchorElement>, id: number) {
+        event.preventDefault();
+        const url = getUrlMarketplace(productUrlList, id);
+        window.open(url, '_blank');
+    }
+
 };

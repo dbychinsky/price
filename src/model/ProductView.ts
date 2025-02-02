@@ -1,7 +1,7 @@
 export interface IProductView {
     id: number,
     name: string,
-    size: IProductSize[]
+    size: IProductSize[],
 }
 
 export interface IProductSize {

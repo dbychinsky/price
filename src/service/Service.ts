@@ -1,11 +1,13 @@
 import { IProductResponse } from '../model/ProductResponse.ts';
 import { IProductStorage } from "../model/ProductStorage.ts";
 import { IProductCurrency } from "../model/Currency.ts";
+import { IProductLink } from "../model/ProductLink.ts";
 
 const apiUrl = import.meta.env.VITE_SERVER_URL;
 
 export class Service {
     private PRODUCT_LIST_KEY = 'PRODUCT_LIST_KEY';
+    private PRODUCT_URL_LIST_KEY = 'PRODUCT_URL_LIST_KEY';
     private CURRENCY_KEY = 'CURRENCY_KEY';
 
     /**
@@ -68,16 +70,34 @@ export class Service {
     }
 
     /**
-     * @description Сохранение выбранного типа валюты.
+     * @description Загрузка выбранного типа валюты.
      */
     async loadCurrencyFromLocalStorage(): Promise<IProductCurrency> {
         return await this.load(this.CURRENCY_KEY);
     }
 
     /**
+     * @description Сохранение ссылки на товар.
+     */
+    async saveLinkToLocalStorage(productLinkList: IProductLink) {
+        let productUrlList: IProductLink[] = this.load(this.PRODUCT_URL_LIST_KEY);
+
+        productUrlList.push(productLinkList);
+
+        this.save(this.PRODUCT_URL_LIST_KEY, productUrlList);
+    }
+
+    /**
+     * @description Загрузка выбранного типа валюты.
+     */
+    async loadLinkToLocalStorage(): Promise<IProductLink[]> {
+        return await this.load(this.PRODUCT_URL_LIST_KEY);
+    }
+
+    /**
      * Метод для работы с localStorage - сохранение данных
      */
-    private save(key: string, object: IProductStorage[] | IProductCurrency) {
+    private save(key: string, object: IProductStorage[] | IProductCurrency | IProductLink[]) {
         localStorage.setItem(key, JSON.stringify(object));
     }
 
