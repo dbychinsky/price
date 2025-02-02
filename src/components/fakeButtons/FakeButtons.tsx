@@ -14,6 +14,9 @@ const FakeButtons = ({setProductUrl}: FakeButtonProps) => {
             <button
                 onClick={() => setProductUrl('https://global.wildberries.ru/product/noski-korotkie-nabor-216617294?option=345257859')}>ГлОп
             </button>
+            <button
+                onClick={() => setProductUrl('https://global.wildberries.ru/product?card=110592443')}>Не р
+            </button>
         </div>
     );
 };

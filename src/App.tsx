@@ -15,6 +15,7 @@ import { IProductCurrency, SelectCurrencyListId, SelectCurrencyListName } from "
 import { Footer } from "./components/footer/Footer.tsx";
 import { GetUrlToMarketplace } from "./utils/GetUrlToMarketplace.ts";
 import { IProductLink } from "./model/ProductLink.ts";
+import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
 
 export const service = new Service();
 
@@ -86,7 +87,7 @@ function App() {
     return (
         <div className={"app"}>
             <div className='wrapper'>
-                {/*<FakeButtons setProductUrl={setProductUrl}/>*/}
+                <FakeButtons setProductUrl={setProductUrl}/>
                 {/*<Header/>*/}
                 <ProductEntryForm
                     url={productUrl}

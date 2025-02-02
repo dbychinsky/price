@@ -17,6 +17,25 @@
             .productItem {
                 display: flex;
                 flex-flow: row nowrap;
+                justify-content: space-between;
+                .item {
+                    padding: 10px 10px 10px 0;
+
+                    .productItemOrigName {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+
+                    .productItemName {
+                        font-size: 10px;
+                        text-align: center;
+                    }
+
+                    &.productPrice {
+
+                    }
+
+                }
             }
         }
     }

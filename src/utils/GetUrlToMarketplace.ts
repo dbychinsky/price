@@ -27,10 +27,17 @@ export class GetUrlToMarketplace {
 
     //Глобальный сайт
     private static getUrlMarketplaceGlobal(url: string): string {
+        // https://global.wildberries.ru/product/noski-korotkie-nabor-216617294?option=345257859
+
         let result: string | undefined;
 
         if (url.includes('?')) {
-            result = url.split('?')[0].split("-").pop();
+            if (url.includes('card')) {
+                //https://global.wildberries.ru/product?card=110592443'
+                result = this.trimStringToLastEqual(url)
+            } else {
+                result = url.split('?')[0].split("-").pop();
+            }
         } else {
             result = url.split("-").pop();
         }
@@ -41,5 +48,16 @@ export class GetUrlToMarketplace {
     //Региональный сайт (by)
     private static getUrlMarketplaceBase(url: string) {
         return url.slice(35).split('/')[0];
+    }
+
+    private static trimStringToLastEqual(url: string) {
+        //https://global.wildberries.ru/product?card=110592443'
+        const lastIndex = url.lastIndexOf('=');
+        if (lastIndex === -1) {
+            // Если символ равенства не найден, возвращаем пустую строку или можно вернуть оригинальную строку
+            return '';
+        }
+        // Возвращаем подстроку от последнего знака равенства до конца строки
+        return url.slice(lastIndex + 1);
     }
 }

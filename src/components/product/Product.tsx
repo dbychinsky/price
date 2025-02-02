@@ -24,20 +24,25 @@ export const Product = (props: ProductProps) => {
                 <div className='productList'>
                     {product.size.map((item) => (
                         <div key={item.name} className='productItem'>
-                            {item.name === ''
-                                ? null
-                                : <div className='productItemName'>
-                                    {item.name}
-                                </div>
-                            }
-                            {item.origName === '' || item.origName === '0'
-                                ? null
-                                : <div className='productItemOrigName'>
-                                    {item.origName}
-                                </div>}
+                            <div className='item'>
+                                {item.origName === '' || item.origName === '0'
+                                    ? null
+                                    : <div className='productItemOrigName'>
+                                        {item.origName}
+                                    </div>}
 
-                            <div className='productPriceTotal'>
-                                {item.price.priceTotal ?? 'Нет в наличии'}
+                                {item.name === ''
+                                    ? null
+                                    : <div className='productItemName'>
+                                        {item.name}
+                                    </div>
+                                }
+                            </div>
+
+                            <div className='item productPrice'>
+                                <div className='priceTotal'>{item.price.priceTotal ?? 'Нет в наличии'}</div>
+                                <div className='priceBasic'>{item.price.priceBasic ?? 'Нет в наличии'}</div>
+                                <div className='priceProduct'>{item.price.priceProduct ?? 'Нет в наличии'}</div>
                             </div>
                         </div>
                     ))}

@@ -14,7 +14,8 @@ export class Serialize {
         productResponse.sizes.map((item) => {
             price.push({
                 priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
-                priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null
+                priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null,
+                priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
             });
         })
 
@@ -33,7 +34,8 @@ export class Serialize {
                 origName: item.origName,
                 price: {
                     priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
-                    priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null
+                    priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null,
+                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
                 }
             });
         })
