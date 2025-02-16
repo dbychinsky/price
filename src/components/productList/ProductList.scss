@@ -1,2 +1,24 @@
 .productList {
+    padding: 10px;
+
+    .productItem {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+
+        background-color: var(--color-white);
+
+        .item {
+            .productItemOrigName {
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+
+            .productItemName {
+                font-size: 10px;
+                text-align: center;
+            }
+        }
+
+    }
 }

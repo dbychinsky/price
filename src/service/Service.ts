@@ -58,8 +58,10 @@ export class Service {
      */
     async deleteProductFromLocalStorage(idProduct: number) {
         let productList: IProductStorage[] = await this.load(this.PRODUCT_LIST_KEY);
+        let productUrlList: IProductStorage[] = await this.load(this.PRODUCT_URL_LIST_KEY);
 
         this.save(this.PRODUCT_LIST_KEY, productList.filter((product) => product.id !== idProduct));
+        this.save(this.PRODUCT_URL_LIST_KEY, productUrlList.filter((product) => product.id !== idProduct));
     }
 
     /**

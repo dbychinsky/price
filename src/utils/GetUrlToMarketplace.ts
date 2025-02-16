@@ -3,11 +3,11 @@ import { IProductLink } from "../model/ProductLink.ts";
 /**
  * Получение ссылки для перехода на сайт маркетплейса.
  */
-export function getUrlMarketplace(urlList: IProductLink[], id: number): string {
-    let baseUrl = urlList.find((url) => url.id === id)?.url
-
-    return baseUrl ? baseUrl : ''
+export async function getUrlMarketplace(urlList: IProductLink[], id: number): Promise<string> {
+    const baseUrl = urlList.find((url) => url.id === id)?.url;
+    return baseUrl || ''; // Возвращаем пустую строку, если baseUrl не найдено
 }
+
 
 export class GetUrlToMarketplace {
 

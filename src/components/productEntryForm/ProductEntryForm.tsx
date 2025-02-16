@@ -22,7 +22,7 @@ export const ProductEntryForm = (props: ProductEntryFormProps) => {
 
     return (
         <div className='productEntryForm'>
-            <div>
+            <div className={`top`}>
                 <label>Укажите ссылку на товар</label>
                 <SelectCurrency
                     setCurrentLanguage={setCurrentLanguage}

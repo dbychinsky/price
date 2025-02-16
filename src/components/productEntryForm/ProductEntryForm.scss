@@ -3,10 +3,24 @@
     display: flex;
     flex-flow: column nowrap;
     gap: 10px;
+    background-color: var(--color-white);
+    padding: 10px 10px 20px 10px;
+
+    .top {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: end;
+    }
 
     label {
         font-size: 14px;
         color: var(--color-grey-dark);
+    }
+
+    select {
+        padding: 6px 10px;
+        border-radius: 4px;
     }
 
     input {
@@ -15,6 +29,6 @@
         height: 36px;
         padding: 8px 12px;
         border-radius: 6px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 }

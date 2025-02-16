@@ -1,5 +1,5 @@
+@use 'assets/palette.scss';
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
-@import 'assets/palette.scss';
 
 .app {
     display: flex;
@@ -7,7 +7,7 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    padding: 0 10px;
+    background-color: var(--color-grey-light);
 
     .wrapper {
         flex: 1 0 auto;

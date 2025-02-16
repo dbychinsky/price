@@ -17,6 +17,19 @@ const FakeButtons = ({setProductUrl}: FakeButtonProps) => {
             <button
                 onClick={() => setProductUrl('https://global.wildberries.ru/product?card=110592443')}>Не р
             </button>
+
+            <button
+                onClick={() => setProductUrl('https://global.wildberries.ru/product/gidrofilnoe-maslo-dlya-umyvaniya-110-ml-15357202?option=44705870')}>Не
+                1
+            </button>
+            <button
+                onClick={() => setProductUrl('https://global.wildberries.ru/product/diffuzor-dlya-doma-265118573?option=411463908')}>Не
+                2
+            </button>
+            <button
+                onClick={() => setProductUrl('https://global.wildberries.ru/product/kapsuly-dlya-stirki-belya-universal-100-sht-235403369?option=370951402')}>Не
+                3
+            </button>
         </div>
     );
 };

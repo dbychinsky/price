@@ -16,6 +16,7 @@ import { Footer } from "./components/footer/Footer.tsx";
 import { GetUrlToMarketplace } from "./utils/GetUrlToMarketplace.ts";
 import { IProductLink } from "./model/ProductLink.ts";
 import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
+import { Header } from "./components/header/Header.tsx";
 
 export const service = new Service();
 
@@ -73,7 +74,6 @@ function App() {
                 )
                 .then(() => saveProductList(productStorageList))
                 .catch((error) => console.log(error, 'Не удалось загрузить данные loadProduct'));
-
         }
     }, [currentCurrency]);
 
@@ -82,13 +82,13 @@ function App() {
             .then((response: IProductLink[]) => {
                 setProductUrlList(response)
             })
-    }, []);
+    }, [productUrl]);
 
     return (
         <div className={"app"}>
             <div className='wrapper'>
                 <FakeButtons setProductUrl={setProductUrl}/>
-                {/*<Header/>*/}
+                <Header/>
                 <ProductEntryForm
                     url={productUrl}
                     setUrl={setProductUrl}
@@ -112,15 +112,20 @@ function App() {
         const productId = Number(GetUrlToMarketplace.getUrl(productUrlCut))
         const productLinkToWb: IProductLink = {id: productId, url: productUrlCut}
 
-        service.getProductFromWB(productId, currentCurrency)
-            .then(response =>
-                productExist(response.id, productList)
-                    ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
-                    : saveProduct(response)
-            )
-            .then(() => service.saveLinkToLocalStorage(productLinkToWb).then())
-            .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
-            .finally(() => setProductUrl(''));
+        if (productUrlCut !== '') {
+            service.getProductFromWB(productId, currentCurrency)
+                .then(response =>
+                    productExist(response.id, productList)
+                        ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
+                        : saveProduct(response, productLinkToWb)
+                )
+                // .then(() => service.saveLinkToLocalStorage(productLinkToWb).then())
+                .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
+                .finally(() => setProductUrl(''));
+        } else {
+            toast.error(MessageList.ERROR_EMPTY_URL)
+        }
+
     }
 
     function deleteProduct(id: number) {
@@ -141,11 +146,12 @@ function App() {
     }
 
 
-    function saveProduct(response: IProductResponse) {
+    function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
         const productConvertedView =
             Serialize.responseToView(response);
         setProductList([... productList, productConvertedView]);
         service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
+        service.saveLinkToLocalStorage(productLinkToWb).then();
     }
 
     async function saveProductList(productList: IProductStorage[]) {
