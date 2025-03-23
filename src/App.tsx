@@ -17,6 +17,7 @@ import { GetUrlToMarketplace } from "./utils/GetUrlToMarketplace.ts";
 import { IProductLink } from "./model/ProductLink.ts";
 import FakeButtons from "./components/fakeButtons/FakeButtons.tsx";
 import { Header } from "./components/header/Header.tsx";
+import { Loading } from "./components/loading/Loading.tsx";
 
 export const service = new Service();
 
@@ -46,6 +47,7 @@ function App() {
     const [currentCurrency, setCurrentCurrency] = useState<IProductCurrency | null>(null);
     const [productUrl, setProductUrl] = useState<string>('');
     const [productUrlList, setProductUrlList] = useState<IProductLink[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         service.loadCurrencyFromLocalStorage()
@@ -95,12 +97,14 @@ function App() {
                     addProductToList={addProductToList}
                     currentCurrency={currentCurrency}
                     setCurrentLanguage={setCurrentCurrency}
+                    isLoading={isLoading}
                 />
                 <ProductList
                     productList={productList}
                     productUrlList={productUrlList}
                     deleteProduct={deleteProduct}
                 />
+                {isLoading && <Loading/>}
                 <Toast/>
             </div>
             <Footer/>
@@ -113,6 +117,7 @@ function App() {
         const productLinkToWb: IProductLink = {id: productId, url: productUrlCut}
 
         if (productUrlCut !== '') {
+            setIsLoading(true);
             service.getProductFromWB(productId, currentCurrency)
                 .then(response =>
                     productExist(response.id, productList)
@@ -121,7 +126,12 @@ function App() {
                 )
                 // .then(() => service.saveLinkToLocalStorage(productLinkToWb).then())
                 .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
-                .finally(() => setProductUrl(''));
+                .finally(
+                    () => {
+                        setProductUrl(''),
+                            setIsLoading(false)
+                    }
+                );
         } else {
             toast.error(MessageList.ERROR_EMPTY_URL)
         }
